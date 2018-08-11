@@ -32,28 +32,22 @@ export default {
     };
   },
   methods: {
-    handleLogin() {
-      axios
-        .post('http://localhost:8888/api/private/v1/login', this.formData)
-        .then((response) => {
-          // console.log(response);
-          var status = response.data.meta.status;
-          var msg = response.data.meta.msg;
-          if (status === 200) {
-            // 提示
-            this.$message.success(msg);
-            // 记录token
-            var token = response.data.data.token;
-            sessionStorage.setItem('token', token);
-            // 跳转后台
-          } else {
-            // 提示登录失败
-            this.$message.error(msg);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    async handleLogin() {
+      var response = await axios.post('http://localhost:8888/api/private/v1/login', this.formData);
+      // var status = response.data.meta.status;
+      // var msg = response.data.meta.msg;
+      var { data: { meta: { status, msg } } } = response;
+      if (status === 200) {
+        // 提示
+        this.$message.success(msg);
+        // 记录token
+        var token = response.data.data.token;
+        sessionStorage.setItem('token', token);
+        // 跳转后台
+      } else {
+        // 提示登录失败
+        this.$message.error(msg);
+      }
     }
   }
 };
