@@ -10,7 +10,8 @@
         <el-input v-model="formData.username"></el-input>
       </el-form-item>
       <el-form-item label="密码">
-        <el-input type="password" v-model="formData.password"></el-input>
+        <!-- 绑定事件实现enter键登录 native：使用原生dom事件 -->
+        <el-input @keyup.enter.native="handleLogin" type="password" v-model="formData.password"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="handleLogin" class="login-btn" type="primary">登录</el-button>
@@ -44,6 +45,7 @@ export default {
         var token = response.data.data.token;
         sessionStorage.setItem('token', token);
         // 跳转后台
+        this.$router.push('/');
       } else {
         // 提示登录失败
         this.$message.error(msg);
